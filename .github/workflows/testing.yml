@@ -30,7 +30,7 @@ jobs:
   # Continuous Deployment (CD) - Deploy to Docker Hub
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ensures CD only runs if CI passes
+    needs: build  # Ensures CD only runs if CI passe
 
     steps:
     - name: Checkout Repository
