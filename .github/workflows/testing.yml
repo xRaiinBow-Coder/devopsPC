@@ -22,12 +22,15 @@ jobs:
       run: npm install
 
     - name: Build Docker image
-      run: docker build -t devops .
+      run: |
+        docker build -t devops .
+        docker images  # Verify the image is built
 
   # Continuous Deployment (CD) - Deploy to Docker Hub
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ensures CD only runs 
+    needs: build  # Ensures CD only runs if CI passes
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -39,10 +42,13 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Tag Docker image
-      run: docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:latest
+      run: |
+        docker images  # List available images to check if devops exists
+        docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:latest
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
+
 
 
 
