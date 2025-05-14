@@ -37,7 +37,7 @@ jobs:
         IMAGE_TAG=${GITHUB_SHA}
         docker tag devops xraiinbowcoder/devops:$IMAGE_TAG
 
-    # Push Docker image to Docker Hub with the commit hash as tag
+    # Push Docker image to Docker Hub with the commit hash as ta
     - name: Push Docker image to Docker Hub
       run: |
         IMAGE_TAG=${GITHUB_SHA}
