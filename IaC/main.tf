@@ -14,15 +14,14 @@ variable "image_tag" {
   type        = string
 }
 
-
 resource "docker_image" "app" {
-  name         = "xraiinbowcoder/devops:${var.image_tag}"
+  name = "xraiinbowcoder/devops:${var.image_tag}"
+
   build {
-    context    = "./"           # The directory where your Dockerfile is located
-    dockerfile = "./Dockerfile" # Path to the Dockerfile
+    context    = "../"            # points to repo root
+    dockerfile = "../Dockerfile"  # path to Dockerfile in repo root
   }
 }
-
 
 resource "docker_container" "app" {
   name  = "devops-app"
@@ -33,12 +32,10 @@ resource "docker_container" "app" {
     external = 10049
   }
 
-  
   env = [
     "MY_ENV_VAR=value"
   ]
 }
-
 
 output "docker_image" {
   value = docker_image.app.name
