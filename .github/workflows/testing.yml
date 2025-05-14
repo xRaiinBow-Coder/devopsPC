@@ -1,6 +1,6 @@
 name: CI/CD
 
-on:
+on: 
   push:
     branches: [main]
 
@@ -25,18 +25,9 @@ jobs:
       run: |
         docker build -t devops .
 
-    - name: Save Docker image
-      run: docker save devops | gzip > devops.tar.gz
-
-    - name: Upload Docker image artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: devops-image
-        path: devops.tar.gz
-
   cd:
     runs-on: ubuntu-latest
-    needs: ci
+    needs: ci  
 
     steps:
     - name: Checkout Repository
@@ -48,26 +39,21 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Download Docker image artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: devops-image
+    - name: Build Docker image again for cd
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/devops:${GITHUB_SHA} .
 
-    - name: Load Docker image
-      run: gunzip -c devops.tar.gz | docker load
-
-    - name: Tag Docker Image
+    - name: Tag Docker 
       run: |
         IMAGE_TAG=${GITHUB_SHA}
-        docker tag devops:$IMAGE_TAG ${{ secrets.DOCKER_USERNAME }}/devops:$IMAGE_TAG
-        docker tag devops:$IMAGE_TAG ${{ secrets.DOCKER_USERNAME }}/devops:latest
+        docker tag ${{ secrets.DOCKER_USERNAME }}/devops:$IMAGE_TAG ${{ secrets.DOCKER_USERNAME }}/devops:latest
 
     - name: Push Docker image to Docker Hub
       run: |
         IMAGE_TAG=${GITHUB_SHA}
         docker push ${{ secrets.DOCKER_USERNAME }}/devops:$IMAGE_TAG
         docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
-
+    
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
 
@@ -78,5 +64,6 @@ jobs:
       run: terraform plan
 
     - name: Terraform Apply
-      run: terraform apply -var="image_tag=${GITHUB_SHA}" -auto-approve
-
+      run: terraform apply -auto-approve
+      env:
+        TF_VAR_image_tag: ${{ github.sha }}
