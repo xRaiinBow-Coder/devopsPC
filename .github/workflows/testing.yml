@@ -49,7 +49,7 @@ jobs:
     - name: Push Docker image to Docker Hub
       run: |
         # Push the devops image to Docker Hub
-        docker push ${{ secrets.DOCKER_USERNAME }}/devops
+        docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
 
 
 
