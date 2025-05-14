@@ -42,7 +42,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker image to Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest  # Push image with default 'latest' tag
+      run: docker push ${{ secrets.DOCKER_USERNAME }} # Push image with default 'latest' tag
 
 
 
