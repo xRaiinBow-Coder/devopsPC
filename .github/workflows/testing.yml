@@ -23,8 +23,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t devops .
-        docker images  # Verify the image is built
+        docker build --no-cache -t devops .  # Build the image
+        docker images  # List available images to check if devops exists
 
   # Continuous Deployment (CD) - Deploy to Docker Hub
   deploy:
@@ -44,10 +44,11 @@ jobs:
     - name: Tag Docker image
       run: |
         docker images  # List available images to check if devops exists
-        docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:latest
+        docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:latest  # Tag the image
 
     - name: Push Docker image to Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest  # Push the image
+
 
 
 
