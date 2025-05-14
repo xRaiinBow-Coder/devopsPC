@@ -1,26 +1,37 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0.2"
-    }
-  }
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
 }
-
-provider "docker" {}
-
-variable "image_tag" {}
 
 resource "docker_image" "app" {
-  name = "xraiinbowcoder/devops:${var.image_tag}"
+  name         = "yourdockerhubusername/devops:latest"  # Docker Hub repo name
+  build {
+    context    = "./"           # Path to your Dockerfile
+    dockerfile = "./Dockerfile" # Path to your Dockerfile
+  }
+  tags = ["latest", var.image_tag]  # Tag the image with both `latest` and a dynamic image tag
 }
 
-resource "docker_container" "app" {
-  name  = "devops-app"
-  image = docker_image.app.name
+resource "docker_registry_image" "app" {
+  name = "yourdockerhubusername/devops:latest"  # The same as the Docker image name
 
-  ports {
-    internal = 10049
-    external = 10049
+  push {
+    username = var.docker_username
+    password = var.docker_password
   }
 }
+
+variable "image_tag" {
+  type    = string
+  default = "v1.0"  # Example tag (this can be dynamic based on the Git commit hash or version)
+}
+
+variable "docker_username" {
+  type    = string
+  default = "yourdockerhubusername"
+}
+
+variable "docker_password" {
+  type    = string
+  default = "yourdockerhubpassword"
+}
+
