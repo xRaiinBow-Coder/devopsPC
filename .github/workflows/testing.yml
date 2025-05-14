@@ -5,35 +5,30 @@ on:
     branches: [main]
 
 jobs:
-  # CI job: Build and Test
-  ci:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+    
     - name: Checkout Repository
       uses: actions/checkout@v2
+
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '16'
 
+
     - name: Install dependencies
       run: |
         npm install
 
+    
     - name: Build Docker image
       run: |
         docker build -t devops .
 
-  # CD job: Deploy to Docker Hub (only runs if CI is successful)
-  cd:
-    runs-on: ubuntu-latest
-    needs: ci  # This ensures that the CD job only runs after the CI job finishes succ
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -41,18 +36,19 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    
     - name: Tag Docker image with commit hash
       run: |
         IMAGE_TAG=${GITHUB_SHA}
         docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:$IMAGE_TAG
         docker tag devops ${{ secrets.DOCKER_USERNAME }}/devops:latest
 
+    
     - name: Push Docker image to Docker Hub
       run: |
         IMAGE_TAG=${GITHUB_SHA}
         docker push ${{ secrets.DOCKER_USERNAME }}/devops:$IMAGE_TAG
         docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
-
 
 
 
