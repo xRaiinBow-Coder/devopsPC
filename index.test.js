@@ -10,7 +10,6 @@ describe("GET /", () => {
   });
 });
 
-// Close the MongoDB connection after all tests to prevent Jest from hanging
 afterAll(async () => {
   await mongoose.connection.close();
 });
