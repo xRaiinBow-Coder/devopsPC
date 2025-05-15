@@ -5,12 +5,9 @@ const methodOverride = require("method-override");
 
 const app = express();
 
-mongoose.connect("mongodb://20.0.153.128:10999/studentsnDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB Connected"))
-.catch((err) => console.error("MongoDB Connection Error:", err));
+mongoose.connect("mongodb://20.0.153.128:10999/studentsnDB")
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -87,7 +84,7 @@ app.delete("/student/:id", async (req, res) => {
 module.exports = app;
 
 if (require.main === module) {
-  app.listen(3000, '0.0.0.0', () => {
+  app.listen(3000, "0.0.0.0", () => {
     console.log("Server is running on port 3000");
   });
 }
