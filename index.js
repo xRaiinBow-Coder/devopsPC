@@ -94,4 +94,6 @@ app.delete("/student/:id", async (req, res) => {
 });
 
 
-app.listen(10048, '0.0.0.0', () => console.log("Server is up and running on port 10049"));
+app.listen(3000, '0.0.0.0', () => {
+  console.log("Server is up and running on port 3000");
+});
