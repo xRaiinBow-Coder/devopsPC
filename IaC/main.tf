@@ -18,8 +18,8 @@ resource "docker_image" "app" {
   name = "xraiinbowcoder/devops:${var.image_tag}"
 
   build {
-    context    = "../"            # points to repo root
-    dockerfile = "../Dockerfile"  # path to Dockerfile in repo root
+    context    = "../"
+    dockerfile = "../Dockerfile"
   }
 }
 
@@ -28,8 +28,8 @@ resource "docker_container" "app" {
   image = docker_image.app.name
 
   ports {
-    internal = 10049
-    external = 10049
+    internal = 3000
+    external = 10048
   }
 
   env = [
