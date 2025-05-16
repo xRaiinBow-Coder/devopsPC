@@ -12,7 +12,7 @@ beforeAll(async () => {
 
 it("should redirect to /students", async () => {
   const res = await request(app).get("/");
-  console.log("Redirect response:", res.headers.location); // Debugging
+  console.log("Redirect response:", res.headers.location);
   expect(res.statusCode).toBe(302);
   expect(res.headers.location).toBe("/students");
 });
