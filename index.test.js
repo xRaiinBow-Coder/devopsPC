@@ -10,12 +10,11 @@ beforeAll(async () => {
   });
 });
 
-decscribe("GET /", () => {
-  it("should redirect to /students", async () => {
-    const res = await request(app).get("/");
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe("/students");
-  });
+it("should redirect to /students", async () => {
+  const res = await request(app).get("/");
+  console.log("Redirect response:", res.headers.location); // Debugging
+  expect(res.statusCode).toBe(302);
+  expect(res.headers.location).toBe("/students");
 });
 
 afterAll(async () => {
