@@ -5,9 +5,10 @@ const methodOverride = require("method-override");
 
 const app = express();
 
-mongoose.connect("mongodb://20.0.153.128:10999/studentsnDB")
-  .then(() => console.log("MongoDB Connected"))
+mongoose.connect("mongodb://20.0.153.128:10999/KieranDB")
+  .then(() => console.log("MongoDB Connected to KieranDB"))
   .catch((err) => console.error("MongoDB Connection Error:", err));
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

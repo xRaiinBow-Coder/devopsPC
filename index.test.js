@@ -4,7 +4,7 @@ const app = require("./index");
 const Student = mongoose.model("Student");
 
 beforeAll(async () => {
-  await mongoose.connect("mongodb://20.0.153.128:10999/studentsnDB", {
+  await mongoose.connect("mongodb://20.0.153.128:10999/KieranDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -77,4 +77,3 @@ describe("Student API", () => {
     expect(found).toBeNull();
   });
 });
-//finished tests
